@@ -1,0 +1,6 @@
+<h1>Wamp Setup</h1>
+<form [formGroup]="wampSetupForm" (ngSubmit)="onSubmit($event)">
+  <label>WAMP URL:</label> <input type="text" formControlName="url"/>
+  <label>Realm:</label> <input type="text" formControlName="realm"/>
+  <button type="submit">Connect</button>
+</form>

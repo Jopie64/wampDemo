@@ -1,0 +1,13 @@
+div.procedure {
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray;
+}
+
+span.name {
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray;
+  font-weight: bold;
+  font-size: 30px;
+}

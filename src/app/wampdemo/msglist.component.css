@@ -1,0 +1,21 @@
+div.frame {
+  border-style: solid;
+  border-color: #0099ff #0000aa;
+  overflow: scroll;
+  height: 150px;
+  width: 500px;
+}
+
+div.logInfo {
+  color: gray;
+}
+div.logMessage {
+  color: darkgreen;
+}
+div.logWarning {
+  background-color: orange;
+}
+div.logError {
+  color: white;
+  background-color: red;
+}

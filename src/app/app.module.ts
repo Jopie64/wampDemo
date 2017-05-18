@@ -9,6 +9,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
+import { MsglistComponent } from 'app/wampdemo/msglist.component';
 
 const appRoutes: Routes = [
   { path: '', component: WampSetupComponent },
@@ -18,6 +19,7 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    MsglistComponent,
     WampSetupComponent,
     WampDemoComponent,
     ProcedureComponent

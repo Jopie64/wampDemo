@@ -1,5 +1,23 @@
-<div>
-  Procedure {{name}}
-  <button (click)="register()">Register</button>
-  <button (click)="call()">Call</button>
+<div class="procedure">
+  <table>
+    <tr>
+      <td>
+        <span class="name">{{name}}</span>
+      </td>
+      <td rowspan="3">
+        <app-msglist [messages]="log"></app-msglist>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>Return:</label><input type="text" [(ngModel)]="returnPayload">
+        <button (click)="register()">Register</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>Payload:</label><input type="text" [(ngModel)]="callPayload"><button (click)="call()">Call</button>
+      </td>
+    </tr>
+  </table>
 </div>

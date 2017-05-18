@@ -1,5 +1,6 @@
+import { MsglistComponent, MessageProvider } from 'app/wampdemo/msglist.component';
 import { JWampService } from '../services/jwamp.service';
-import { Observable, Subscription, BehaviorSubject } from 'rxjs/Rx';
+import { Observable, Subscription, Subject, BehaviorSubject } from 'rxjs/Rx';
 import { Component, Injectable, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -12,29 +13,32 @@ export class ProcedureComponent {
   @Input()
   name: string;
 
+  log = new MessageProvider();
+
+  returnPayload = 'You called me';
+  callPayload = 'Hey';
+
   constructor(public wampService: JWampService) {
   }
 
   register(){
     this.wampService.jwamp.register(this.name, payload => {
-      console.log('Received command ' + this.name);
-      console.log(payload);
-      return [null, 'Received successfully'];
+      this.log.message('Called: ' + payload[0]);
+      return [null, this.returnPayload];
     })
-    .then(() => console.log('Command ' + this.name + ' registered.'))
+    .then(() => this.log.info('Registered'))
     .catch(e => {
-        console.log('Unable to register ' + this.name + '. ' + e);
+        this.log.error('Registration error: ' + e);
     });
   }
 
   call() {
-    this.wampService.jwamp.call(this.name, ['Who you\'re gonna call?'])
+    this.wampService.jwamp.call(this.name, [this.callPayload])
       .then(result => {
-        console.log('Response of call to ' + this.name);
-        console.log(result);
+        this.log.message('Call response: ' + result[0]);
       })
       .catch(e => {
-        console.log('Unable to call ' + this.name + '. ' + e);
+        this.log.error('Unable to call. ' + e);
       });
    }
 }

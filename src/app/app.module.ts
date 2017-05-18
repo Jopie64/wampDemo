@@ -1,6 +1,7 @@
 import { JWampService } from './services/jwamp.service';
 import { WampDemoComponent } from './wampdemo/wampdemo.component';
 import { WampSetupComponent } from './wampsetup/wampsetup.component';
+import { ProcedureComponent } from './wampdemo/procedure.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +19,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     WampSetupComponent,
-    WampDemoComponent
+    WampDemoComponent,
+    ProcedureComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

@@ -1,3 +1,4 @@
+import { SubscriptionComponent } from './wampdemo/subscription.component';
 import { JWampService } from './services/jwamp.service';
 import { WampDemoComponent } from './wampdemo/wampdemo.component';
 import { WampSetupComponent } from './wampsetup/wampsetup.component';
@@ -22,7 +23,8 @@ const appRoutes: Routes = [
     MsglistComponent,
     WampSetupComponent,
     WampDemoComponent,
-    ProcedureComponent
+    ProcedureComponent,
+    SubscriptionComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

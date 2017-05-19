@@ -11,7 +11,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class WampDemoComponent implements OnInit {
   public wampState$: Observable<string> = new BehaviorSubject('Please setup WAMP first');
 
-  procedures: string[] = ['Proc1', 'Proc2'];
+  procedures: string[] = ['Procedure1'];
+  subscriptions: string[] = ['Subscription1'];
 
   constructor(public wampService: JWampService) {
   }
@@ -29,5 +30,9 @@ export class WampDemoComponent implements OnInit {
 
   addProcedure(name: string) {
     this.procedures.push(name);
+  }
+
+  addSubscription(name: string) {
+    this.subscriptions.push(name);
   }
 }

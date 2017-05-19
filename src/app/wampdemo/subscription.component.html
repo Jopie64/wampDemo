@@ -1,0 +1,22 @@
+<div class="subscription">
+  <table>
+    <tr>
+      <td>
+        <span class="name">{{name}}</span>
+      </td>
+      <td rowspan="3">
+        <app-msglist [messages]="log"></app-msglist>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button (click)="subscribe()">Subscribe</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>Payload:</label><input type="text" [(ngModel)]="publishPayload"><button (click)="publish()">Publish</button>
+      </td>
+    </tr>
+  </table>
+</div>

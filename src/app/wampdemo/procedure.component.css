@@ -4,10 +4,13 @@ div.procedure {
   border-color: gray;
 }
 
-span.name {
+span.nameOld {
   border-style: solid;
   border-width: 1px;
   border-color: gray;
+}
+
+span.name {
   font-weight: bold;
   font-size: 30px;
 }

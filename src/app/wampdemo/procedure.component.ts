@@ -1,7 +1,7 @@
 import { MsglistComponent, MessageProvider } from 'app/wampdemo/msglist.component';
 import { JWampService } from '../services/jwamp.service';
 import { Observable, Subscription, Subject, BehaviorSubject } from 'rxjs/Rx';
-import { Component, Injectable, OnInit, Input } from '@angular/core';
+import { Component, Injectable, OnDestroy, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   templateUrl: './procedure.component.html',
   styleUrls: ['./procedure.component.css']
 })
-export class ProcedureComponent {
+export class ProcedureComponent implements OnDestroy {
   @Input()
   name: string;
 
@@ -18,18 +18,22 @@ export class ProcedureComponent {
   returnPayload = 'You called me';
   callPayload = 'Hey';
 
+  conns = new Subscription();
+
   constructor(public wampService: JWampService) {
   }
 
-  register(){
-    this.wampService.jwamp.register(this.name, payload => {
+  ngOnDestroy() {
+    this.conns.unsubscribe();
+  }
+
+  register() {
+    this.conns.add(this.wampService.jwamp.register(this.name, payload => {
       this.log.message('Called: ' + payload[0]);
       return [null, this.returnPayload];
-    })
-    .then(() => this.log.info('Registered'))
-    .catch(e => {
-        this.log.error('Registration error: ' + e);
-    });
+    }).subscribe(
+      registered => this.log.info(registered ? 'Registered' : 'Not registered'),
+      e => this.log.error('Registration error: ' + e)));
   }
 
   call() {

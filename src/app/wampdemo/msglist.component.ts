@@ -38,6 +38,10 @@ export class MsglistComponent implements OnInit, OnDestroy {
 
   conns = new Subscription;
 
+  clear() {
+    this.msgList = [];
+  }
+
   msgTypeToString(msgType: eMsgType) {
     return eMsgType[msgType];
   }

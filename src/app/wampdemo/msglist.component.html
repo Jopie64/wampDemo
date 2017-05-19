@@ -1,3 +1,6 @@
+<div>
+  <button (click)="clear()">Clear</button>
+</div>
 <div class="frame">
   <div *ngFor="let msg of msgList" [class]="'log' + msgTypeToString(msg.msgType)">
     {{msg.msg}}

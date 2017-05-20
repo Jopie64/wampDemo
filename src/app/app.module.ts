@@ -11,6 +11,7 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MsglistComponent } from 'app/wampdemo/msglist.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
   { path: '', component: WampSetupComponent },
@@ -27,6 +28,7 @@ const appRoutes: Routes = [
     SubscriptionComponent
   ],
   imports: [
+    NgbModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     BrowserModule,
     FormsModule, ReactiveFormsModule,

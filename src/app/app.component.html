@@ -1,8 +1,13 @@
-<nav>
-  <a routerLink="/" routerLinkActive="active">Setup WAMP</a>
-  <a routerLink="/demo" routerLinkActive="active">Demo</a>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" routerLink="/demo">WAMP Demo</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/">Setup WAMP</a></li>
+      <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/demo">Demo</a></li>
+    </ul>
+  </div>
 </nav>
-
-<ngb-alert type="info">Bootstrap zegt hallo!</ngb-alert>
-<!--<alert type="info">Bootstrap zegt hallo!</alert>-->
+<!--<ngb-alert type="info">Bootstrap zegt hallo!</ngb-alert>-->
 <router-outlet></router-outlet>

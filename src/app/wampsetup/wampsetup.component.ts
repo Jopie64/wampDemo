@@ -15,7 +15,7 @@ export class WampSetupComponent {
   });
 
   constructor(public wampService: JWampService, public fb: FormBuilder) {
-    this.wampSetupForm.setValue({url: 'ws://localhost:9001/wamp', realm: 'realm1'});
+    this.wampSetupForm.setValue({url: this.wampService.url, realm: this.wampService.realm});
   }
 
   onSubmit(e) {

@@ -4,7 +4,7 @@ div.frame {
   border-width: 1px;
   overflow: scroll;
   height: 150px;
-  width: 500px;
+/*  width: 500px;*/
 }
 
 div.logInfo {

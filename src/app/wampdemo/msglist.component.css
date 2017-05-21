@@ -1,6 +1,7 @@
 div.frame {
   border-style: solid;
   border-color: #0099ff #0000aa;
+  border-width: 1px;
   overflow: scroll;
   height: 150px;
   width: 500px;

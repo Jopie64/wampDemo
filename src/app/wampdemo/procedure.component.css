@@ -14,3 +14,10 @@ span.name {
   font-weight: bold;
   font-size: 30px;
 }
+
+.vcenter {
+    vertical-align: middle;
+/*    display: inline-block;
+
+    float: none;
+*/}

@@ -3,9 +3,20 @@
 </h1>
 
 <h2>Procedures</h2>
-<label>Name: </label><input type="text" #newProcName>&nbsp;<button (click)="addProcedure(newProcName.value)">Add</button>
+<div class=" input-group">
+  <span class="input-group-btn">
+    <button class="btn btn-default" type="button" (click)="addProcedure(newProcName.value)">Add</button>
+  </span>
+  <input type="text" class="form-control" #newProcName placeholder="Procedure Name">
+</div><!-- /input-group -->
+
 <app-procedure *ngFor="let i of procedures" [name]="i"></app-procedure>
 
 <h2>Subscriptions</h2>
-<label>Name: </label><input type="text" #newSubscrName>&nbsp;<button (click)="addSubscription(newSubscrName.value)">Add</button>
+<div class=" input-group">
+  <span class="input-group-btn">
+    <button class="btn btn-default" type="button" (click)="addSubscription(newSubscrName.value)">Add</button>
+  </span>
+  <input type="text" class="form-control" #newSubscrName placeholder="Subscription Name">
+</div><!-- /input-group -->
 <app-subscription *ngFor="let i of subscriptions" [name]="i"></app-subscription>

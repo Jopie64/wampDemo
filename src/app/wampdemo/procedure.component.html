@@ -1,23 +1,28 @@
-<div class="procedure">
-  <table>
-    <tr>
-      <td>
-        <span class="name">{{name}}</span>
-      </td>
-      <td rowspan="3">
-        <app-msglist [messages]="log"></app-msglist>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label>Return:</label><input type="text" [(ngModel)]="returnPayload">
-        <button (click)="register()">Register</button>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label>Payload:</label><input type="text" [(ngModel)]="callPayload"><button (click)="call()">Call</button>
-      </td>
-    </tr>
-  </table>
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading"><span class="name">{{name}}</span></div>
+    <div class="panel-body">
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 vcenter">
+            <div class="short-div input-group">
+              <input type="text" class="form-control" [(ngModel)]="returnPayload" placeholder="Return payload">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" (click)="register()">Register</button>
+              </span>
+            </div><!-- /input-group -->
+            <div class="short-div input-group">
+              <input type="text" class="form-control" [(ngModel)]="callPayload" placeholder="Payload">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" (click)="call()">Call</button>
+              </span>
+            </div><!-- /input-group -->
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <app-msglist [messages]="log"></app-msglist>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

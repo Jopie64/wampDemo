@@ -1,6 +1,11 @@
 <div class="container">
   <div class="panel panel-default">
-    <div class="panel-heading"><span class="name">{{name}}</span></div>
+    <div class="panel-heading">
+      <span class="name">{{name}}</span>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+      </button>
+    </div>
     <div class="panel-body">
       <div class="container-fluid">
         <div class="row-fluid">

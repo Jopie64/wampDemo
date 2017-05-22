@@ -10,7 +10,7 @@
   <input type="text" class="form-control" #newProcName placeholder="Procedure Name">
 </div><!-- /input-group -->
 
-<app-procedure *ngFor="let i of procedures" [name]="i"></app-procedure>
+<app-procedure *ngFor="let i of procedures" [name]="i" (onClose)="closeProcedure(i)"></app-procedure>
 
 <h2>Subscriptions</h2>
 <div class=" input-group">
@@ -19,4 +19,4 @@
   </span>
   <input type="text" class="form-control" #newSubscrName placeholder="Subscription Name">
 </div><!-- /input-group -->
-<app-subscription *ngFor="let i of subscriptions" [name]="i"></app-subscription>
+<app-subscription *ngFor="let i of subscriptions" [name]="i" (onClose)="closeSubscription(i)"></app-subscription>

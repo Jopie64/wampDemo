@@ -35,4 +35,14 @@ export class WampDemoComponent implements OnInit {
   addSubscription(name: string) {
     this.subscriptions.push(name);
   }
+
+  closeProcedure(name: string) {
+    console.log('Closing procedure ' + name);
+    this.procedures.splice(this.procedures.indexOf(name), 1);
+  }
+
+  closeSubscription(name: string) {
+    console.log('Closing subscription ' + name);
+    this.subscriptions.splice(this.subscriptions.indexOf(name), 1);
+  }
 }

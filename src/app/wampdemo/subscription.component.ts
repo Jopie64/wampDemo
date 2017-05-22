@@ -1,7 +1,7 @@
 import { MsglistComponent, MessageProvider } from 'app/wampdemo/msglist.component';
 import { JWampService } from '../services/jwamp.service';
 import { Observable, Subscription, Subject, BehaviorSubject } from 'rxjs/Rx';
-import { Component, Injectable, OnDestroy, Input } from '@angular/core';
+import { Component, Injectable, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -12,6 +12,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class SubscriptionComponent implements OnDestroy {
   @Input()
   name: string;
+
+  @Output()
+  onClose = new EventEmitter<void>();
 
   log = new MessageProvider();
 
@@ -47,4 +50,8 @@ export class SubscriptionComponent implements OnDestroy {
         this.log.error('Publish error: ' + e);
       });
   }
+
+  close() {
+     this.onClose.emit();
+   }
 }

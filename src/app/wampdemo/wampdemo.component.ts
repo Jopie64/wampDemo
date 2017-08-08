@@ -9,7 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./wampdemo.component.css']
 })
 export class WampDemoComponent implements OnInit {
-  public wampState$: Observable<string> = new BehaviorSubject('Please setup WAMP first');
+  public wampState$: BehaviorSubject<string> = new BehaviorSubject('Please setup WAMP first');
 
   procedures: string[] = ['Procedure1'];
   subscriptions: string[] = ['Subscription1'];
@@ -20,9 +20,7 @@ export class WampDemoComponent implements OnInit {
   ngOnInit() {
     if (this.wampService.jwamp) {
       console.log('Wamp initialized. Monitoring...');
-      this.wampState$ = this.wampService.jwamp.isConnected$
-        .do(connected => console.log('State: ' + connected))
-        .map((connected): string => connected ? 'Verbonden' : 'Niet verbonden');
+      this.wampState$.next('Wamp Connected');
     } else {
       console.log('Wamp not initialized...');
     }

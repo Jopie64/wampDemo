@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { makeJWamp, JWampProxy } from 'jwamp';
+import { makeJWamp, JWampProxy } from './jwamp';
 import { Subscription } from 'rxjs/Rx';
 
 @Injectable()

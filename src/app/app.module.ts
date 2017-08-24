@@ -13,6 +13,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MsglistComponent } from 'app/wampdemo/msglist.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { WhisperComponent } from 'app/whisper/whisper.component';
+import { WhisperIoComponent } from 'app/whisper/io.component';
 
 const appRoutes: Routes = [
   { path: '', component: WampSetupComponent },
@@ -28,7 +29,8 @@ const appRoutes: Routes = [
     WampDemoComponent,
     WhisperComponent,
     ProcedureComponent,
-    SubscriptionComponent
+    SubscriptionComponent,
+    WhisperIoComponent
   ],
   imports: [
     NgbModule.forRoot(),

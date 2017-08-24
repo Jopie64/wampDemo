@@ -1,1 +1,15 @@
-<h1>Hello!</h1>
+<h1>Wispering service</h1>
+<!--
+    <div class=" input-group">
+  <span class="input-group-btn">
+    Whisper input:
+  </span>
+  <input type="text" class="form-control" (ngModelChange)="onWhisperChange($event)" placeholder="Whisper">
+</div><!-- /input-group -->
+
+<dl class="dl-horizontal">
+    <dt>Whisper input</dt>
+    <dd><input type="text" class="form-control" [ngModel]="whisperInput" (ngModelChange)="onWhisperChange($event)" placeholder="Whisper"></dd>
+</dl>
+
+<app-whisperio *ngFor="let i of ios" [rpc]="i" (onOutput)="onNewOutput()"></app-whisperio>

@@ -5,8 +5,8 @@
     </div>
     <ul class="nav navbar-nav">
       <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/">Setup WAMP</a></li>
-      <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/demo">Demo</a></li>
-      <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/whisper">Whisper</a></li>
+      <li *ngIf="wampService.jwamp" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/demo">Demo</a></li>
+      <li *ngIf="wampService.jwamp" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/whisper">Whisper</a></li>
     </ul>
   </div>
 </nav>

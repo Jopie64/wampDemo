@@ -12,10 +12,12 @@ import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MsglistComponent } from 'app/wampdemo/msglist.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { WhisperComponent } from 'app/whisper/whisper.component';
 
 const appRoutes: Routes = [
   { path: '', component: WampSetupComponent },
-  { path: 'demo', component: WampDemoComponent }
+  { path: 'demo', component: WampDemoComponent },
+  { path: 'whisper', component: WhisperComponent }
 ];
 
 @NgModule({
@@ -24,6 +26,7 @@ const appRoutes: Routes = [
     MsglistComponent,
     WampSetupComponent,
     WampDemoComponent,
+    WhisperComponent,
     ProcedureComponent,
     SubscriptionComponent
   ],

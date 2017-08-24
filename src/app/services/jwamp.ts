@@ -1,13 +1,37 @@
 import { Observable, ReplaySubject, Subscription } from 'rxjs/Rx';
-import { Wampy, WampyOptions } from 'wampy/dist/wampy';
+import { Wampy, WampyOptions } from 'wampy/src/wampy';
 
-type JWampRpc = (arrayPayload: any[], objectPayload: any, options: any) => any[];
+interface JWampArgs {
+    argsList?: any[];
+    argsDict?: any;
+}
+
+export interface JWampRpcRsp extends JWampArgs {
+    options?: any;
+}
+
+export interface JWampPayload extends JWampArgs {
+    details?: any;
+}
+
+export interface JWampError extends JWampPayload {
+    error?: string;
+    details?: string;
+}
+
+interface WampyRpcPayload extends JWampPayload {
+    result_handler: (payload: JWampPayload) => void;
+    error_handler: (e: JWampError) => void;
+}
+
+export type JWampRpc = (payload: JWampPayload) => JWampRpcRsp | Promise<JWampRpcRsp> | Observable<JWampRpcRsp>;
 
 interface JWampProxyBase {
   lifetime$: Observable<void>;
 
   register(uri: string, rpc: JWampRpc): Observable<void>;
-  call(uri: string, payload?: any): Promise<any[]>;
+  call(uri: string, payload?: JWampPayload): Promise<JWampPayload>;
+  callProgress(uri: string, payload?: JWampPayload): Observable<JWampPayload>;
   subscribe(uri: string): Observable<any>;
   publish(topic: string, payload?: any): Promise<void>;
 
@@ -81,7 +105,8 @@ function makeProxyFromProxy(origProxy: JWampProxyBase, prefix: string, hasOwnLif
 
     const proxyBase = {
         register: (uri: string, rpc: JWampRpc) => origProxy.register(formatUri(uri), rpc),
-        call: (uri: string, payload?: any) => origProxy.call(formatUri(uri), payload),
+        call: (uri: string, payload?: JWampPayload) => origProxy.call(formatUri(uri), payload),
+        callProgress: (uri: string, payload?: JWampPayload) => origProxy.callProgress(formatUri(uri), payload),
         subscribe: (uri: string) => origProxy.subscribe(formatUri(uri)),
         publish: (uri: string, payload?: any ) => origProxy.publish(formatUri(uri), payload),
     };
@@ -96,14 +121,32 @@ function makeProxyFromProxy(origProxy: JWampProxyBase, prefix: string, hasOwnLif
 
 function makeProxyFromWampy(wampy: Wampy, wampyLifetime: Observable<void>): JWampProxy {
 
-    function call(topic: string, payload?: any): Promise<any> {
-        return new Promise<any[]>(function (resolve, reject) {
-            wampy.call(topic, payload, {
-                onSuccess: (args) => { resolve(args); },
+    function call(uri: string, payload?: JWampPayload): Promise<JWampPayload> {
+        return new Promise<JWampPayload>(function (resolve, reject) {
+            wampy.call(uri, payload, {
+                onSuccess: (args: JWampPayload) => { console.log(args); resolve(args); },
                 onError: (err) => { reject(err); }
             });
         });
     }
+
+    function callProgress(uri: string, payload?: JWampPayload): Observable<JWampPayload> {
+        return Observable.create(observer => {
+            wampy.call(uri, payload, {
+                onSuccess: (args: JWampPayload) => {
+                    console.log(args);
+                    if (args.argsList || args.argsDict) {
+                        observer.next(args);
+                    }
+                    if (!args.details.progress) {
+                        observer.complete();
+                    }
+                },
+                onError: (err) => observer.error(err)
+            });
+        });
+    }
+
 
     function subscribe(uri: string): Observable<any> {
       return Observable.create(observer => {
@@ -119,8 +162,24 @@ function makeProxyFromWampy(wampy: Wampy, wampyLifetime: Observable<void>): JWam
     function register(uri: string, rpc: JWampRpc): Observable<void> {
       return Observable.create(observer => {
         console.log('Registering ' + uri);
+        function myRpc(payload: WampyRpcPayload) {
+            const rsp = rpc(payload);
+            if (rsp instanceof Observable) {
+                return new Promise((resolve, reject) => {
+                    rsp.subscribe(
+                        // Next sends intermediate values
+                        n => payload.result_handler(Object.assign(n, { options: { progress: true }})),
+                        // Error rejects the promise
+                        reject,
+                        // Complete event resolves the promise with
+                        resolve);
+                });
+            }
+            console.log('Non progressive responses...');
+            return rsp;
+        }
         wampy.register(uri, {
-            rpc: rpc,
+            rpc: myRpc,
             onSuccess: () => observer.next(true),
             onError: e => observer.error(e)
             });
@@ -141,6 +200,7 @@ function makeProxyFromWampy(wampy: Wampy, wampyLifetime: Observable<void>): JWam
         lifetime$: wampyLifetime,
         register: register,
         call: call,
+        callProgress: callProgress,
         subscribe: subscribe,
         publish: publish,
         makeProxy: (prefix: string, hasOwnLifetime: boolean) => makeProxyFromProxy(proxy, prefix, hasOwnLifetime)
@@ -159,7 +219,7 @@ const makeJWamp = function (url: string, realm: string, wampyMaker?: WampyMaker)
         realm: realm,
         onConnect: () => {
             console.log('Connected!');
-            observer.next(makeProxyFromWampy(myWampy, wampyLifetime));
+            observer.next(makeProxyFromWampy(myWampy, wampyLifetime.asObservable()));
             wampyLifetime.next(undefined);
         },
         onError: () => {

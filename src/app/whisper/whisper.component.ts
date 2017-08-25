@@ -3,7 +3,10 @@ import { Observable, Subscription, BehaviorSubject, Subject } from 'rxjs/Rx';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-
+interface IO {
+  rpc: string;
+  input$: Observable<string>;
+}
 
 @Component({
   selector: 'app-whisper',
@@ -16,9 +19,9 @@ export class WhisperComponent implements OnInit {
   public currentWhisper$: Observable<string>;
   public ios: string[] = ['Hello', 'World'];
 
-  constructor() {
+  constructor(public wampsvc: JWampService) {
     this.currentWhisper$ = this.whisper$.asObservable()
-      .debounceTime(1000);
+      .debounceTime(500);
   }
 
   ngOnInit(): void {
@@ -28,7 +31,7 @@ export class WhisperComponent implements OnInit {
     this.whisper$.next(v);
   }
 
-  onNewOutput() {
-    console.log('OnNewOutput()');
+  onNewOutput(e) {
+    console.log('OnNewOutput(): ', e);
   }
 }

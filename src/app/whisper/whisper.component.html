@@ -12,4 +12,4 @@
     <dd><input type="text" class="form-control" [ngModel]="whisperInput" (ngModelChange)="onWhisperChange($event)" placeholder="Whisper"></dd>
 </dl>
 
-<app-whisperio *ngFor="let i of ios" [rpc]="i" (onOutput)="onNewOutput()"></app-whisperio>
+<app-whisperio *ngFor="let i of ios" [rpc]="i" [input]="currentWhisper$" (onOutput)="onNewOutput($event)"></app-whisperio>

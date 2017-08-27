@@ -20,6 +20,7 @@ export class WhisperComponent implements OnInit {
   public currentWhisper$: Observable<string>;
   public ios: IO[] = [];
   public finalOutput = '';
+  public conns = new Subscription();
 
   constructor(public wampsvc: JWampService) {
     this.currentWhisper$ = this.whisper$.asObservable()
@@ -29,6 +30,10 @@ export class WhisperComponent implements OnInit {
   ngOnInit(): void {
     this.addIo('Hello');
     this.addIo('World');
+    this.conns.add(this.wampsvc.jwamp$
+      .flatMap(w => w.subscribe('newWhisper'))
+      .skip(1)
+      .subscribe(name => this.addIo(name)));
   }
 
   addIo(rpc: string) {

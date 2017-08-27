@@ -9,21 +9,18 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./wampdemo.component.css']
 })
 export class WampDemoComponent implements OnInit {
-  public wampState$: BehaviorSubject<string> = new BehaviorSubject('Please setup WAMP first');
+  public wampState$: Observable<string>;
 
   procedures: string[] = ['Procedure1'];
   subscriptions: string[] = ['Subscription1'];
 
   constructor(public wampService: JWampService) {
+    this.wampState$ = wampService.jwamp$
+      .map(_ => 'Wamp initialized. Monitoring...')
+      .startWith('Wamp not initialized. Please setup WAMP first');
   }
 
   ngOnInit() {
-    if (this.wampService.jwamp) {
-      console.log('Wamp initialized. Monitoring...');
-      this.wampState$.next('Wamp Connected');
-    } else {
-      console.log('Wamp not initialized...');
-    }
   }
 
   addProcedure(name: string) {

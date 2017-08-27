@@ -31,22 +31,24 @@ export class ProcedureComponent implements OnDestroy {
   }
 
   register() {
-    this.conns.add(this.wampService.jwamp.register(this.name, payload => {
-      this.log.message('Called: ' + payload[0]);
-      return [null, this.returnPayload];
-    }).subscribe(
-      registered => this.log.info(registered ? 'Registered' : 'Not registered'),
-      e => this.log.error('Registration error: ' + e)));
+    this.conns.add(this.wampService.jwamp$
+      .flatMap(w => w.register(this.name, payload => {
+        this.log.message('Called: ' + payload[0]);
+        return [null, this.returnPayload];
+      })).subscribe(
+        registered => this.log.info(registered ? 'Registered' : 'Not registered'),
+        e => this.log.error('Registration error: ' + e)));
   }
 
   call() {
-    this.wampService.jwamp.call(this.name, [this.callPayload])
-      .then(result => {
-        this.log.message('Call response: ' + result[0]);
-      })
-      .catch(e => {
-        this.log.error('Unable to call. ' + e);
-      });
+    this.wampService.jwamp$.take(1)
+      .flatMap(w => w.call(this.name, [this.callPayload]))
+      .subscribe(result => {
+          this.log.message('Call response: ' + result[0]);
+        },
+        e => {
+          this.log.error('Unable to call. ' + e);
+        });
    }
 
    close() {

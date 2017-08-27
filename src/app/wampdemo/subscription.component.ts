@@ -30,25 +30,30 @@ export class SubscriptionComponent implements OnDestroy {
   }
 
   subscribe() {
-    this.conns.add(this.wampService.jwamp.subscribe(this.name).subscribe(
-      payload => {
-        if (payload) {
-          this.log.info('Received: ' + payload[0]);
-        } else {
-          this.log.info('Subscribed');
-        }
-      },
-      e => this.log.error('Subscription error: ' + e)));
+    this.conns.add(this.wampService.jwamp$
+      .flatMap(w => w.subscribe(this.name))
+      .subscribe(
+        payload => {
+          if (payload) {
+            this.log.info('Received: ' + payload[0]);
+          } else {
+            this.log.info('Subscribed');
+          }
+        },
+        e => this.log.error('Subscription error: ' + e)));
   }
 
   publish() {
-    this.wampService.jwamp.publish(this.name, [this.publishPayload])
-      .then(() => {
-        this.log.message('Published');
-      })
-      .catch(e => {
-        this.log.error('Publish error: ' + e);
-      });
+    this.wampService.jwamp$
+      .take(1)
+      .flatMap(w => w.publish(this.name, [this.publishPayload]))
+      .subscribe(
+        () => {
+          this.log.message('Published');
+        },
+        e => {
+          this.log.error('Publish error: ' + e);
+        });
   }
 
   close() {

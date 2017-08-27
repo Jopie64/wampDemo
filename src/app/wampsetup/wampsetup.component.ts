@@ -15,7 +15,8 @@ export class WampSetupComponent {
   });
 
   constructor(public wampService: JWampService, public fb: FormBuilder) {
-    this.wampSetupForm.setValue({url: this.wampService.url, realm: this.wampService.realm});
+    this.wampService.wampSettings$.take(1).subscribe(
+      v => this.wampSetupForm.setValue(v));
   }
 
   onSubmit(e) {
@@ -26,6 +27,6 @@ export class WampSetupComponent {
     console.log('Configuring WAMP...');
     const wampSettings = this.wampSetupForm.value;
     console.log(wampSettings);
-    this.wampService.setWampData(wampSettings.url, wampSettings.realm);
+    this.wampService.setWampSettings(wampSettings.url, wampSettings.realm);
   }
 }

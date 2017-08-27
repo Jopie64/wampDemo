@@ -24,11 +24,17 @@ export class WhisperIoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.input.subscribe(v => this.sendOutput(`${this.rpc}-${v}-${this.rpc}`));
-  }
-
-  sendOutput(output: string) {
-    this.output = output;
-    this.onOutput.emit(output);
+    this.input
+      .withLatestFrom(
+        this.wampsvc.jwamp$,
+        (input, wamp) => ({input: input, wamp: wamp}))
+      .flatMap(v => Observable.onErrorResumeNext<string>(
+        v.wamp.callProgress(this.rpc, { argsList: [v.input] })
+          .map(out => out.argsList[0] as string)
+          .do(
+            out => this.output = out,
+            e => this.output = 'Error: ' + e),
+        Observable.from([v.input])))
+      .subscribe(v => this.onOutput.emit(v));
   }
 }

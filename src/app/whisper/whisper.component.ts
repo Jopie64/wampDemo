@@ -38,6 +38,10 @@ export class WhisperComponent implements OnInit {
   }
 
   addIo(rpc: string) {
+    if (this.ios.findIndex(io => io.rpc === rpc) >= 0) {
+      console.log(`Rpc ${rpc} already defined`);
+      return;
+    }
     let input$ = this.currentWhisper$;
     if (this.ios.length > 0) {
       const inputSubject = new Subject<string>();

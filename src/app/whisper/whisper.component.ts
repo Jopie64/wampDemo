@@ -28,14 +28,17 @@ export class WhisperComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addIo('Hello');
-    this.addIo('World');
+//    this.addIo('Hello');
+//    this.addIo('World');
     this.conns.add(this.wampsvc.jwamp$
       .flatMap(w => w.subscribe('newWhisper'))
       .skip(1)
       .map(v => v.argsList[0])
       .subscribe(name => this.addIo(name)));
-  }
+      this.wampsvc.jwamp$
+        .flatMap(w => w.publish('discover'))
+        .subscribe();
+    }
 
   addIo(rpc: string) {
     if (this.ios.findIndex(io => io.rpc === rpc) >= 0) {

@@ -121,9 +121,21 @@ function makeProxyFromProxy(origProxy: JWampProxyBase, prefix: string, hasOwnLif
 
 function makeProxyFromWampy(wampy: Wampy, wampyLifetime: Observable<void>): JWampProxy {
 
+    function toCallPayload(payload?: JWampPayload) {
+        if (payload) {
+            if (payload.argsList) {
+                return payload.argsList;
+            }
+            if (payload.argsDict) {
+                return payload.argsDict;
+            }
+        }
+        return null;
+    }
+
     function call(uri: string, payload?: JWampPayload): Promise<JWampPayload> {
         return new Promise<JWampPayload>(function (resolve, reject) {
-            wampy.call(uri, payload, {
+            wampy.call(uri, toCallPayload(payload), {
                 onSuccess: (args: JWampPayload) => { console.log(args); resolve(args); },
                 onError: (err) => { reject(err); }
             });
@@ -132,13 +144,13 @@ function makeProxyFromWampy(wampy: Wampy, wampyLifetime: Observable<void>): JWam
 
     function callProgress(uri: string, payload?: JWampPayload): Observable<JWampPayload> {
         return Observable.create(observer => {
-            wampy.call(uri, payload, {
+            wampy.call(uri, toCallPayload(payload), {
                 onSuccess: (args: JWampPayload) => {
                     console.log(args);
                     if (args.argsList || args.argsDict) {
                         observer.next(args);
                     }
-                    if (!args.details.progress) {
+                    if (!args.details || !args.details.progress) {
                         observer.complete();
                     }
                 },

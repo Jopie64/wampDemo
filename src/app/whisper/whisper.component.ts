@@ -35,14 +35,15 @@ export class WhisperComponent implements OnInit {
       .skip(1)
       .map(v => v.argsList[0])
       .subscribe(name => this.addIo(name)));
-      this.wampsvc.jwamp$
-        .flatMap(w => w.publish('discover'))
-        .subscribe();
+    this.wampsvc.jwamp$
+      .flatMap(w => w.publish('discover'))
+      .subscribe();
     }
 
   addIo(rpc: string) {
     if (this.ios.findIndex(io => io.rpc === rpc) >= 0) {
       console.log(`Rpc ${rpc} already defined`);
+      this.whisper$.next(this.whisperInput);
       return;
     }
     let input$ = this.currentWhisper$;
@@ -56,9 +57,11 @@ export class WhisperComponent implements OnInit {
       input$: input$,
       onOutput: v => this.finalOutput = v
     });
+    this.whisper$.next(this.whisperInput);
   }
 
   onWhisperChange(v: string) {
+    this.whisperInput = v;
     this.whisper$.next(v);
   }
 

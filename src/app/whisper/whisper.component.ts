@@ -30,15 +30,31 @@ export class WhisperComponent implements OnInit {
   ngOnInit(): void {
 //    this.addIo('Hello');
 //    this.addIo('World');
+    // A new whisper is registered
     this.conns.add(this.wampsvc.jwamp$
       .flatMap(w => w.subscribe('newWhisper'))
       .skip(1)
       .map(v => v.argsList[0])
       .subscribe(name => this.addIo(name)));
+    // React on remote input changes
+    let lastReceivedInput = '';
+    this.conns.add(this.wampsvc.jwamp$
+      .flatMap(w => w.subscribe('newInput'))
+      .skip(1)
+      .map(v => v.argsList[0])
+      .do(v => lastReceivedInput = v)
+      .subscribe(v => this.onWhisperChange(v)));
+    // Publish input changes
+    this.conns.add(this.currentWhisper$
+      .filter(v => v !== lastReceivedInput)
+      .switchMap(v => this.wampsvc.jwamp$.map(wamp => ({value: v, wamp: wamp })))
+      .flatMap(v => v.wamp.publish('newInput', { argsList: [v.value]} ))
+      .subscribe());
+    // Discover whisperers on startup
     this.wampsvc.jwamp$
       .flatMap(w => w.publish('discover'))
       .subscribe();
-    }
+  }
 
   addIo(rpc: string) {
     if (this.ios.findIndex(io => io.rpc === rpc) >= 0) {

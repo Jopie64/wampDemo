@@ -10,9 +10,9 @@
 <dl class="dl-horizontal">
     <dt>Whisper input</dt>
     <dd><input type="text" class="form-control" [ngModel]="whisperInput" (ngModelChange)="onWhisperChange($event)" placeholder="Whisper"></dd>
-</dl>
 
-<app-whisperio *ngFor="let i of ios" [rpc]="i.rpc" [input]="i.input$" (onOutput)="i.onOutput($event)"></app-whisperio>
+    <app-whisperio *ngFor="let i of ios" [rpc]="i.rpc" [input]="i.input$" (onOutput)="i.onOutput($event)"></app-whisperio>
+</dl>
 
 <h2> Final output </h2>
 

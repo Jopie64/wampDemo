@@ -33,6 +33,7 @@ export class WhisperComponent implements OnInit {
     this.conns.add(this.wampsvc.jwamp$
       .flatMap(w => w.subscribe('newWhisper'))
       .skip(1)
+      .map(v => v.argsList[0])
       .subscribe(name => this.addIo(name)));
   }
 

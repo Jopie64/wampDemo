@@ -47,8 +47,8 @@ export class WhisperComponent implements OnInit {
     // Publish input changes
     this.conns.add(this.currentWhisper$
       .filter(v => v !== lastReceivedInput)
-      .switchMap(v => this.wampsvc.jwamp$.map(wamp => ({value: v, wamp: wamp })))
-      .flatMap(v => v.wamp.publish('newInput', { argsList: [v.value]} ))
+      .switchMap(v => this.wampsvc.jwamp$.map(wamp => ({v, wamp})))
+      .flatMap(({v, wamp}) => wamp.publish('newInput', { argsList: [v]} ))
       .subscribe());
     // Discover whisperers on startup
     this.wampsvc.jwamp$

@@ -187,7 +187,7 @@ function makeProxyFromWampy(wampy: Wampy, wampyLifetime: Observable<void>): JWam
       });
     }
 
-    function publish(topic: string, payload?: any): Promise<void> {
+    function publish(topic: string, payload?: JWampPayload): Promise<void> {
         return new Promise<void>(function (resolve, reject) {
             wampy.publish(topic, payload, {
                 onSuccess: () => { resolve(); },

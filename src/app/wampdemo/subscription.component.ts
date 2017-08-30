@@ -35,7 +35,7 @@ export class SubscriptionComponent implements OnDestroy {
       .subscribe(
         payload => {
           if (payload) {
-            this.log.info('Received: ' + payload[0]);
+            this.log.info('Received: ' + payload.argsList[0]);
           } else {
             this.log.info('Subscribed');
           }
@@ -46,7 +46,7 @@ export class SubscriptionComponent implements OnDestroy {
   publish() {
     this.wampService.jwamp$
       .take(1)
-      .flatMap(w => w.publish(this.name, [this.publishPayload]))
+      .flatMap(w => w.publish(this.name, { argsList: [this.publishPayload]}))
       .subscribe(
         () => {
           this.log.message('Published');
